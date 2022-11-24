@@ -1,6 +1,6 @@
 ## Julia webview2 wrap
 
-![JWW icon](https://raw.githubusercontent.com/bluebug/webview2wrap/master/icons/icon.png)
+![JWW icon](https://raw.githubusercontent.com/bluebug/webview2wrap/master/icons/icon.ico)
 
 see example.jl for detail.
 
