@@ -1,0 +1,6 @@
+*.jl linguist-language=julia
+*.hpp linguist-language=c++
+*.cc linguist-language=c++
+.vscode/** linguist-vendored
+include/** linguist-vendored
+lib/** linguist-vendored

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Julia Webview Window</title>
+    </head>
+
+    <body>
+        <h3>Julia webview2 wrap javascript examples.</h3>
+        <p>
+        <h5>1. call julia "greet" function in "Main" module:</h5>
+        <input type="text" id="name" placeholder="my name" />
+        <input type="button" value="greet" onclick="greet();" />
+        </p>
+        <p id="msgfromjulia"></p>
+        <div style="color: #333;white-space: pre;font-size: small;">var name = document.getElementById('name').value;
+            $Julia['<strong style="color: #33e;">Main.greet</strong>'](name).then((result) => {
+            document.getElementById('msgfromjulia').innerHTML = result;
+            }).catch((error) => {
+            document.getElementById('msgfromjulia').innerHTML = "Julia error: " + JSON.stringify(error);
+            });</div>
+        <script>
+            function greet() {
+                var name = document.getElementById('name').value;
+                $Julia['Main.greet'](name)
+                    .then((result) => {
+                        document.getElementById('msgfromjulia').innerHTML =
+                            result;
+                    })
+                    .catch((error) => {
+                        document.getElementById('msgfromjulia').innerHTML =
+                            JSON.stringify(error);
+                    });
+            }
+        </script>
+        <p>
+        <h5>2. eval julia function expr:</h5>
+        <textarea id="expr" cols="80" rows="3">((x,y)->sin(x) * cos(y))(1.5, 2.6)</textarea>
+        <p><input type="button" value="eval" onclick="evalexpr();" /></p>
+        </p>
+        <p id="resultfromjulia"></p>
+        <script>
+            function evalexpr() {
+                try {
+                    var expr = document.getElementById('expr').value;
+                    $Julia.eval(expr)
+                        .then((result) => {
+                            document.getElementById('resultfromjulia').innerHTML = result;
+                        })
+                        .catch((error) => {
+                            document.getElementById('resultfromjulia').innerHTML =
+                                "Julia error: " + JSON.stringify(error);
+                        });
+                } catch (error) {
+                    document.getElementById('resultfromjulia').innerHTML =
+                        "JS error: " + JSON.stringify(error);
+                }
+
+            }
+        </script>
+        <p>
+        <h5>3. open new webview2 window:</h5>
+        <input type="text" id="title" placeholder="title" value="open window from js">
+        <br />
+        <input type="text" id="url" placeholder="url" value="https://github.com">
+        <input type="button" value="open" onclick="openwindow()">
+        <p id="resultforopenwindow"></p>
+        <script>
+            function openwindow() {
+                var title = document.getElementById('title').value;
+                var url = document.getElementById('url').value;
+                var expr = `w = Main.webview2wrap.create("${title}";url="${url}"); "window opened"`
+                $Julia.synceval(expr)
+                    .then((result) => {
+                        document.getElementById('resultforopenwindow').innerHTML =
+                            JSON.stringify(result);
+                    })
+                    .catch((error) => {
+                        document.getElementById('resultforopenwindow').innerHTML =
+                            JSON.stringify(error);
+                    });
+            }
+        </script>
+        </p>
+    </body>
+
+</html>
