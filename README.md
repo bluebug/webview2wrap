@@ -1,5 +1,7 @@
 ## Julia webview2 wrap
 
+![JWW icon](https://raw.githubusercontent.com/bluebug/webview2wrap/master/icons/icon.png)
+
 see example.jl for detail.
 
 1. most win32 api come from julia-win32
