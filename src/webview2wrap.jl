@@ -1076,7 +1076,22 @@ begin
             self.webview = InterfaceWraper{ICoreWebView2Vtbl}()
 
             self.create = (w) -> begin
-                (w.hwnd, err) = createwindow(title=w.title; proc=self.windowproc)
+                hicon = C_NULL
+                smicon = C_NULL
+                if w.icon !== ""
+                    (hicon, err) = loadimage(w.icon, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTCOLOR)
+                    if err > 0
+                        @show w.icon, err
+                        hicon = C_NULL
+                    end
+
+                    (smicon, err) = loadimage(w.icon, IMAGE_ICON, 0, 0, LR_LOADFROMFILE | LR_DEFAULTCOLOR)
+                    if err > 0
+                        @show w.icon, err
+                        smicon = C_NULL
+                    end
+                end
+                (w.hwnd, err) = createwindow(title=w.title; proc=self.windowproc, icon=hicon, iconSm=smicon)
                 if (err > 0)
                     @show w.hwnd, err
                     return nothing

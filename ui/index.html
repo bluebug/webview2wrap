@@ -17,11 +17,11 @@
         </p>
         <p id="msgfromjulia"></p>
         <div style="color: #333;white-space: pre;font-size: small;">var name = document.getElementById('name').value;
-            $Julia['<strong style="color: #33e;">Main.greet</strong>'](name).then((result) => {
-            document.getElementById('msgfromjulia').innerHTML = result;
-            }).catch((error) => {
-            document.getElementById('msgfromjulia').innerHTML = "Julia error: " + JSON.stringify(error);
-            });</div>
+$Julia['<strong style="color: #33e;">Main.greet</strong>'](name).then((result) => {
+    document.getElementById('msgfromjulia').innerHTML = result;
+}).catch((error) => {
+    document.getElementById('msgfromjulia').innerHTML = "Julia error: " + JSON.stringify(error);
+});</div>
         <script>
             function greet() {
                 var name = document.getElementById('name').value;
