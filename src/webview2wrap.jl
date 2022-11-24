@@ -510,6 +510,7 @@ end
 #### End (C)Structs####
 
 #### Begin Win32 functions ####
+#### https://github.com/henrik-m/julia-win32 ####
 begin
     function cwstring(val)
         val == C_NULL || isa(val, Cwstring) ? val :
