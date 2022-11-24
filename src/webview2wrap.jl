@@ -546,6 +546,14 @@ begin
         ccall((:SetFocus, "user32"), Ptr{Cvoid}, (Ptr{Cvoid},), hwnd)
     end
 
+    function setactivewindow(hwnd)
+        ccall((:SetActiveWindow, "user32"), Ptr{Cvoid}, (Ptr{Cvoid},), hwnd)
+    end
+
+    function setforegroundwindow(hwnd)
+        ccall((:SetForegroundWindow, "user32"), Ptr{Cvoid}, (Ptr{Cvoid},), hwnd)
+    end
+
     function settitle(hwnd, title)
         ccall((:SetWindowTextW, "user32"), Ptr{Cvoid}, (Ptr{Cvoid}, Cwstring), hwnd, cwstring(title))
     end
@@ -1123,6 +1131,7 @@ begin
                     else
                         w.seturl("about:blank")
                     end
+                    setforegroundwindow(w.hwnd)
                 end
             end
 
