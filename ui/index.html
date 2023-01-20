@@ -25,7 +25,7 @@ $Julia['<strong style="color: #33e;">Main.greet</strong>'](name).then((result) =
         <script>
             function greet() {
                 var name = document.getElementById('name').value;
-                $Julia['Main.greet'](name)
+                $Julia['Main.webview2wrap.greet'](name)
                     .then((result) => {
                         document.getElementById('msgfromjulia').innerHTML =
                             result;

@@ -832,6 +832,10 @@ begin
             w = Webview2WindowCache[hwnd]
             w.windowstatus = WINDOW_STOP
             w.close()
+            delete!(Webview2WindowCache, hwnd)
+            if (length(Webview2WindowCache) + length(Webview2WindowPendings)) == 0
+                global msgloopstatus = MSGLOOP_STOP
+            end
         elseif msg == WM_DPICHANGED
             setwindowpos(hwnd, lParam)
             return 1
@@ -1211,7 +1215,7 @@ begin
 
         msg = MSG()
         ptr_msg = pointer_from_objref(msg)
-        while true
+        while msgloopstatus !== MSGLOOP_STOP
             if peekmessage(ptr_msg, C_NULL, 1) > 0
                 translatemessage(ptr_msg)
                 dispatchmessage(ptr_msg)
@@ -1228,7 +1232,6 @@ begin
             yield()
             sleep(0.0125)
         end
-        global msgloopstatus = WINDOW_STOP
     end
 end
 #### End wrap ####
@@ -1237,13 +1240,29 @@ end
 # When using/import module, auto start msgloop in other thread.
 """
 function __init__()
-    push!(Base.DL_LOAD_PATH, "$(pwd())/lib")
-    global msglooptask = errormonitor(Base.Threads.@async msgloop())
+    push!(Base.DL_LOAD_PATH, "$(pwd())")
     println("\n\e[0;31;1mJulia \e[0;32;1mWebview2 \e[0;35;1mWrap\e[0m\n")
     println("\e[0;34;1minclude(\"webview2wrap.jl\")\e[0m")
     println("\e[0;34;1musing .webview2wrap\e[0m")
     println("\e[0;34;1mwin = create(title::String; kwargs...); ... ; win.close()\e[0m")
 end
 export create
+
+
+using LiveServer
+using Base.Threads
+function greet(name)
+    "Welcome to Julia, $(name)!"
+end
+
+function julia_main()::Cint
+    # do something based on ARGS?
+    @async serve(host="0.0.0.0", port=8000, dir="../ui")
+
+    global msglooptask = errormonitor(Base.Threads.@async msgloop())
+    webview2wrap.create("Julia Webview Window"; url="http://localhost:8000", icon="../icons/icon.ico")
+    wait(msglooptask)
+    return 0 # if things finished successfully
+end
 
 end
