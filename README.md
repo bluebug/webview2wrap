@@ -17,3 +17,5 @@ https://developer.microsoft.com/en-us/microsoft-edge/webview2/
 https://www.nuget.org/packages/Microsoft.Web.WebView2 
 
 the nupkg file can be unzip as zip file. "WebView2.h" is in "\build\native\include", and "WebView2Loader.dll" is in "\build\native\x64".
+
+4. using builder.jl to buil binary.
